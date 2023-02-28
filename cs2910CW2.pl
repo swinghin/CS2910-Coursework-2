@@ -40,14 +40,14 @@ find(Location1, Location2, Visited, Way) :-
 /* 3.2 Paths ending at a common destination */
 
 % bipath/4 for returning paths from origin1 to destination to origin2
-bipath(Origin1,Origin2,Destination,Path) :-
-    path(Origin1,Destination,Path1), % pathfind from origin1 to destination
-    path(Origin2,Destination,Path2), % pathfind from origin2 to destination
-    reverse(Path2,Path2Rev), % reverse path2 before joining to final path
-    delete(Path2Rev,Destination,Path2Fix), % remove destination from path2 to avoid duplicated in result path
-    append(Path1,Path2Fix,Path). % join both paths to final path
+bipath(Origin1, Origin2, Destination, Path) :-
+    path(Origin1, Destination, Path1), % pathfind from origin1 to destination
+    path(Origin2, Destination, Path2), % pathfind from origin2 to destination
+    reverse(Path2, Path2Rev), % reverse path2 before joining to final path
+    delete(Path2Rev, Destination, Path2Fix), % remove destination from path2 to avoid duplicated in result path
+    append(Path1, Path2Fix, Path). % join both paths to final path
 
 % bipath_shortest/4 returns shortest path
-bipath_shortest(Origin1,Origin2,Destination,Shortest) :-
-    setof(Path, bipath(Origin1,Origin2,Destination,Path), Paths), % get list of possible paths
+bipath_shortest(Origin1, Origin2, Destination, Shortest) :-
+    setof(Path, bipath(Origin1, Origin2, Destination, Path), Paths), % get list of possible paths
     Paths = [Shortest|_]. % select the shortest path
