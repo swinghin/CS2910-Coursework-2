@@ -46,3 +46,8 @@ bipath(Origin1,Origin2,Destination,Path) :-
     reverse(Path2,Path2Rev), % reverse path2 before joining to final path
     delete(Path2Rev,Destination,Path2Fix), % remove destination from path2 to avoid duplicated in result path
     append(Path1,Path2Fix,Path). % join both paths to final path
+
+% bipath_shortest/4 returns shortest path
+bipath_shortest(Origin1,Origin2,Destination,Shortest) :-
+    setof(Path, bipath(Origin1,Origin2,Destination,Path), Paths), % get list of possible paths
+    Paths = [Shortest|_]. % select the shortest path
