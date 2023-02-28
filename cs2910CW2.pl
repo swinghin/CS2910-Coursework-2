@@ -39,7 +39,7 @@ find(Location1, Location2, Visited, Way) :-
 
 /* 3.2 Paths ending at a common destination */
 
-% bipath/4 for returning
+% bipath/4 for returning paths from origin1 to destination to origin2
 bipath(Origin1,Origin2,Destination,Path) :-
     path(Origin1,Destination,Path1), % pathfind from origin1 to destination
     path(Origin2,Destination,Path2), % pathfind from origin2 to destination
