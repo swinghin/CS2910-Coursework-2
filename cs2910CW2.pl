@@ -73,3 +73,24 @@ doorway(corridor,masterbedroom,2).
 % connected/3 in terms of doorway/3 and reverse
 connected(Location1,Location2,Cost) :- 
     doorway(Location1,Location2,Cost) ; doorway(Location2,Location1,Cost).
+
+% path/4 if origin is not valid
+path(Origin, _, _, _) :- \+ connected(Origin, _), 
+    format('~w not a valid origin.', Origin), fail.
+% path/4 if destination is not valid
+path(_, Destination, _, _) :- \+ connected(_, Destination), 
+    format('~w not a valid destination.', Destination), fail.
+% path/4 if both locations are valid
+path(Origin, Destination, Path, Cost) :-
+    find(Origin, Destination, [Origin], Way, Cost), % recursive call to find path
+    reverse(Way, Path). % reverse backtracking stack
+
+% find/5 backtracking search
+find(Location1, Location2, Path, [Location2|Path], Cost) :-
+    connected(Location1, Location2, Cost).
+find(Location1, Location2, Visited, Way, Cost) :-
+    connected(Location1, Midpoint, Distance), 
+    Midpoint \== Location2, 
+    \+ member(Midpoint, Visited), 
+    find(Midpoint, Location2, [Midpoint|Visited], Way, NextDistance),
+    Cost is Distance + NextDistance.
