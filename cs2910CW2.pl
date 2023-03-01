@@ -94,3 +94,9 @@ find(Location1, Location2, Visited, Way, Cost) :-
     \+ member(Midpoint, Visited), 
     find(Midpoint, Location2, [Midpoint|Visited], Way, NextDistance),
     Cost is Distance + NextDistance.
+
+% path_ranked/3 returns a list of paths ranked by cost
+path_ranked(Origin, Destination, RankedPaths) :-
+    findall((Costs-Paths), path(Origin, Destination, Paths, Costs), PathPairs), % get set of possible paths
+    keysort(PathPairs,RankedPairs),
+    pairs_values(RankedPairs, RankedPaths).
