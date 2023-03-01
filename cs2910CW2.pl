@@ -28,7 +28,7 @@ path(Origin, Destination, Path) :-
     find(Origin, Destination, [Origin], Way), % recursive call to find path
     reverse(Way, Path). % reverse backtracking stack
 
-% find/4 backtracking search
+% find/4 backtracking search, referenced from Tutorial 4.1
 find(Location1, Location2, Path, [Location2|Path]) :-
     connected(Location1, Location2).
 find(Location1, Location2, Visited, Way) :-
@@ -49,7 +49,7 @@ bipath(Origin1, Origin2, Destination, Paths) :-
 % bipath_shortest/4 returns shortest path
 bipath_shortest(Origin1, Origin2, Destination, Shortest) :-
     setof(Paths, bipath(Origin1, Origin2, Destination, Paths), PathSet), % get set of possible paths
-    list_shortest(PathSet,Shortest). % call predicate to get shortest list from set of paths
+    list_shortest(PathSet, Shortest). % call predicate to get shortest list from set of paths
 
 % list_shortest/2 returns shortest list out of a given set
 list_shortest(Set, Shortest) :-
@@ -60,19 +60,20 @@ list_shortest(Set, Shortest) :-
 
 /* 3.3 Paths with Costs */
 
-doorway(outside,porch1,1).
-doorway(porch1,kitchen,1).
-doorway(kitchen,livingroom,3).
-doorway(porch2,livingroom,5).
-doorway(outside,porch2,1).
-doorway(corridor,livingroom,1).
-doorway(bedroom,corridor,2).
-doorway(corridor,wc,2).
-doorway(corridor,masterbedroom,2).
+% doorway/3 definitions for the two bedroom house with cost
+doorway(outside, porch1, 1).
+doorway(porch1, kitchen, 1).
+doorway(kitchen, livingroom, 3).
+doorway(porch2, livingroom, 5).
+doorway(outside, porch2, 1).
+doorway(corridor, livingroom, 1).
+doorway(bedroom, corridor, 2).
+doorway(corridor, wc, 2).
+doorway(corridor, masterbedroom, 2).
 
 % connected/3 in terms of doorway/3 and reverse
-connected(Location1,Location2,Cost) :- 
-    doorway(Location1,Location2,Cost) ; doorway(Location2,Location1,Cost).
+connected(Location1, Location2, Cost) :- 
+    doorway(Location1, Location2, Cost) ; doorway(Location2, Location1, Cost).
 
 % path/4 if origin is not valid
 path(Origin, _, _, _) :- \+ connected(Origin, _), 
@@ -85,21 +86,21 @@ path(Origin, Destination, Path, Cost) :-
     find(Origin, Destination, [Origin], Way, Cost), % recursive call to find path
     reverse(Way, Path). % reverse backtracking stack
 
-% find/5 backtracking search
+% find/5 backtracking search, referenced from Tutorial 4.2
 find(Location1, Location2, Path, [Location2|Path], Cost) :-
     connected(Location1, Location2, Cost).
 find(Location1, Location2, Visited, Way, Cost) :-
     connected(Location1, Midpoint, Distance), 
     Midpoint \== Location2, 
     \+ member(Midpoint, Visited), 
-    find(Midpoint, Location2, [Midpoint|Visited], Way, NextDistance),
+    find(Midpoint, Location2, [Midpoint|Visited], Way, NextDistance), 
     Cost is Distance + NextDistance.
 
 % path_ranked/3 returns a list of paths ranked by cost
 path_ranked(Origin, Destination, RankedPaths) :-
-    findall((Costs-Paths), path(Origin, Destination, Paths, Costs), PathPairs), % get set of possible paths
-    keysort(PathPairs,RankedPairs),
-    pairs_values(RankedPairs, RankedPaths).
+    findall((Costs-Paths), path(Origin, Destination, Paths, Costs), PathPairs), % get pairs of possible paths and cost
+    keysort(PathPairs, RankedPairs), % sort the pair with cost (key)
+    pairs_values(RankedPairs, RankedPaths). % get only the path (value) from the pairs
 
 % bipath_same_cost/4 for returning bi-directional paths only if O1>D cost == O2>D cost
 bipath_same_cost(Origin1, Origin2, Destination, Paths) :-
