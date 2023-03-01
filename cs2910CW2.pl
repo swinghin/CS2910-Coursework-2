@@ -100,3 +100,11 @@ path_ranked(Origin, Destination, RankedPaths) :-
     findall((Costs-Paths), path(Origin, Destination, Paths, Costs), PathPairs), % get set of possible paths
     keysort(PathPairs,RankedPairs),
     pairs_values(RankedPairs, RankedPaths).
+
+% bipath_same_cost/4 for returning bi-directional paths only if O1>D cost == O2>D cost
+bipath_same_cost(Origin1, Origin2, Destination, Paths) :-
+    path(Origin1, Destination, Path1, Cost1), % pathfind and cost from origin1 to destination
+    path(Destination, Origin2, Path2, Cost2), % pathfind and cost from origin2 to destination (in reverse)
+    Cost1 == Cost2, % check if costs from both sides are the same
+    delete(Path2, Destination, Path2Fix), % if cost same, remove destination from path2 to avoid duplication
+    append(Path1, Path2Fix, Paths). % join both paths to final path
