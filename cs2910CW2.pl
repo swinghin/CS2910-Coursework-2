@@ -50,3 +50,15 @@ bipath(Origin1, Origin2, Destination, Paths) :-
 bipath_shortest(Origin1, Origin2, Destination, Shortest) :-
     setof(Paths, bipath(Origin1, Origin2, Destination, Paths), PathSet), % get sorted set of possible paths
     PathSet = [Shortest|_]. % select the first path in the set, i.e. the shortest
+
+/* 3.3 Paths with Costs */
+
+doorway(outside,porch1,1).
+doorway(porch1,kitchen,1).
+doorway(kitchen,livingroom,3).
+doorway(porch2,livingroom,5).
+doorway(outside,porch2,1).
+doorway(corridor,livingroom,1).
+doorway(bedroom,corridor,2).
+doorway(corridor,wc,2).
+doorway(corridor,masterbedroom,2).
