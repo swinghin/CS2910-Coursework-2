@@ -62,3 +62,7 @@ doorway(corridor,livingroom,1).
 doorway(bedroom,corridor,2).
 doorway(corridor,wc,2).
 doorway(corridor,masterbedroom,2).
+
+% connected/3 in terms of doorway/3 and reverse
+connected(Location1,Location2,Cost) :- 
+    doorway(Location1,Location2,Cost) ; doorway(Location2,Location1,Cost).
