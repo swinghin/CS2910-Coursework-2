@@ -48,5 +48,12 @@ bipath(Origin1, Origin2, Destination, Paths) :-
 
 % bipath_shortest/4 returns shortest path
 bipath_shortest(Origin1, Origin2, Destination, Shortest) :-
-    setof(Paths, bipath(Origin1, Origin2, Destination, Paths), PathSet), % get sorted set of possible paths
-    PathSet = [Shortest|_]. % select the first path in the set, i.e. the shortest
+    setof(Paths, bipath(Origin1, Origin2, Destination, Paths), PathSet), % get set of possible paths
+    list_shortest(PathSet,Shortest). % call predicate to get shortest list from set of paths
+
+% list_shortest/2 returns shortest list out of a given set
+list_shortest(Set, Shortest) :-
+    maplist(length, Set, LengthList), % make a list of lengths of lists from set
+    min_list(LengthList, ShortestLength), % get the shortest length of the set
+    member(Shortest, Set), % limit Shortest item to be member of orignal set
+    length(Shortest, ShortestLength). % get the SHortest item with the shortest length
