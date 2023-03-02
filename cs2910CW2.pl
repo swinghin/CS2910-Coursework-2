@@ -11,7 +11,7 @@ For example, to find path(s) from the bedroom to the kitchen, the command will b
 which returns two possible paths:
 
     P = [bedroom, corridor, livingroom, kitchen] ;
-    P = [bedroom, corridor, livingroom, porch2, outside, porch1, kitchen] ;
+    P = [bedroom, corridor, livingroom, porch2, outside, porch1, kitchen] .
 
 path/3 also handles wrong input. If we enter an invalid location, for example:
 
@@ -61,7 +61,26 @@ find(Location1, Location2, Visited, Way) :-
     \+ member(Midpoint, Visited), 
     find(Midpoint, Location2, [Midpoint|Visited], Way).
 
-/* 3.2 Paths ending at a common destination */
+/* 3.2 Paths ending at a common destination 
+
+To get possible path(s) between O1, D, O2, run
+
+    bipath(O1, O2, D, P).
+
+For example, to get path(s) from bedroom, via kitchen, to outside, the command looks like this:
+
+    bipath(bedroom, outside, kitchen, P).
+
+which returns: 
+
+    P = [bedroom, corridor, livingroom, kitchen, porch1, outside] ;
+    P = [bedroom, corridor, livingroom, kitchen, livingroom, porch2, outside] ;
+    P = [bedroom, corridor, livingroom, porch2, outside, porch1, kitchen, porch1, outside] ;
+    P = [bedroom, corridor, livingroom, porch2, outside, porch1, kitchen, livingroom, porch2, outside] .
+
+By reusing path/3 from 3.1, there is error checking for locations as well.
+
+*/
 
 % bipath/4 for returning bi-directional paths from origin1 to destination to origin2
 bipath(Origin1, Origin2, Destination, Paths) :-
