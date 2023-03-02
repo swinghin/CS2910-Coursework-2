@@ -1,4 +1,28 @@
-/* 3.1 Finding a path */
+/* 3.1 Finding a path
+
+To get possible path(s) P from O to D, run
+
+    path(O, D, P).
+
+For example, to find path(s) from the bedroom to the kitchen, the command will be
+
+    path(bedroom, kitchen, P).
+
+which returns two possible paths:
+
+    P = [bedroom, corridor, livingroom, kitchen] ;
+    P = [bedroom, corridor, livingroom, porch2, outside, porch1, kitchen] ;
+
+path/3 also handles wrong input. If we enter an invalid location, for example:
+
+    path(bedroom, garden, P).
+
+it returns
+
+    garden not a valid destination.
+    false.
+
+ */
 
 % doorway/2 definitions for the two bedroom house
 doorway(livingroom, kitchen).
