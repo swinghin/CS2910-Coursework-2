@@ -14,6 +14,8 @@ it returns
     garden not a valid destination.
     false.
 
+path/3 recursively calls find/4, which does depth-first search by backtracking.
+
 */
 
 % doorway/2 definitions for the two bedroom house
