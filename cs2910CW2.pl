@@ -96,7 +96,32 @@ list_shortest(Set, Shortest) :-
 
 /* 3.3 Paths with Costs 
 
+To get a path along with its cost(distance), run
+    path(O, D, P, C).
+For example, to find path(s) with its total cost from the bedroom to the kitchen, the command will be:
+    path(bedroom, kitchen, P, C).
+which returns two possible paths and their respective total costs:
+    P = [bedroom, corridor, livingroom, kitchen],
+    C = 6 ;
+    P = [bedroom, corridor, livingroom, porch2, outside, porch1, kitchen],
+    C = 11 .
 
+To get paths ranked by cost, run
+    path_ranked(O, D, RP).
+For example, to find path(s) from the bedroom to the kitchen ranked by the costs, the command will be:
+    path_ranked(bedroom, kitchen, RP).
+which a list of the two possible paths sorted by cost:
+    RP = [[bedroom, corridor, livingroom, kitchen], [bedroom, corridor, livingroom, porch2, outside, porch1, kitchen]].
+
+To get possible path(s) between O1, D, O2 only if the costs of O1, D and O2, D are the same, run
+    bipath_same_cost(O1, O2, D, SP).
+For example, to get path(s) from bedroom, via kitchen, to outside, the command looks like this:
+    bipath_same_cost(bedroom, outside, kitchen, SP).
+which fails because the cost of bedroom to kitchen is different to kitchen to outside.
+In another example, to get path(s) from bedroom to WC via corridor, this command:
+    bipath_same_cost(bedroom, wc, corridor, SP).
+will return a possible path because cost of bedroom to corridor and WC to corridor are the same at 2:
+    SP = [bedroom, corridor, wc] .
 
 */
 
