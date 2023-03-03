@@ -64,21 +64,20 @@ find(Location1, Location2, Visited, Way) :-
 /* 3.2 Paths ending at a common destination 
 
 To get possible path(s) between O1, D, O2, run
-
     bipath(O1, O2, D, P).
-
 For example, to get path(s) from bedroom, via kitchen, to outside, the command looks like this:
-
     bipath(bedroom, outside, kitchen, P).
-
 which returns: 
-
     P = [bedroom, corridor, livingroom, kitchen, porch1, outside] ;
     P = [bedroom, corridor, livingroom, kitchen, livingroom, porch2, outside] ;
     P = [bedroom, corridor, livingroom, porch2, outside, porch1, kitchen, porch1, outside] ;
     P = [bedroom, corridor, livingroom, porch2, outside, porch1, kitchen, livingroom, porch2, outside] .
-
 By reusing path/3 from 3.1, there is error checking for locations as well.
+
+To get only the shortest path, do
+    bipath_shortest(bedroom, outside, kitchen, P).
+which returns the shortest path only:
+    P = [bedroom, corridor, livingroom, kitchen, porch1, outside] .
 
 */
 
@@ -101,7 +100,11 @@ list_shortest(Set, Shortest) :-
     member(Shortest, Set), % limit Shortest item to be member of orignal set
     length(Shortest, ShortestLength). % get the SHortest item with the shortest length
 
-/* 3.3 Paths with Costs */
+/* 3.3 Paths with Costs 
+
+
+
+*/
 
 % doorway/3 definitions for the two bedroom house with cost
 doorway(outside, porch1, 1).
